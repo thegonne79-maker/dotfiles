@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-DOTFILES_DIR="$HOME/dotfiles/nixos"
+USER_HOME=$(getent passwd $(whoami) | cut -d: -f6)
+DOTFILES_DIR="$USER_HOME/dotfiles/nixos"
 
 echo "Navigating to $DOTFILES_DIR..."
 pushd "$DOTFILES_DIR"
