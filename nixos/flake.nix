@@ -9,16 +9,16 @@
     nix-gaming.url = "github:fufexan/nix-gaming";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-citizen, nix-gaming, ... }: {
-    nixosConfigurations.tank = nixpkgs.lib.nixosSystem {
+  outputs = inputs: {
+    nixosConfigurations.tank = inputs.nixpkgs.lib.nixosSystem {
       specialArgs = { inherit inputs; };
       modules = [
         ./configuration.nix
       ];
     };
 
-    homeConfigurations.tank = home-manager.lib.homeManagerConfiguration {
-      pkgs = import nixpkgs {
+    homeConfigurations.tank = inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = import inputs.nixpkgs {
         system = "x86_64-linux";
         config.allowUnfree = true;
       };
