@@ -117,7 +117,6 @@ unzip
     go
     rustup
     cargo
-    openssl
     openssh
     git-lfs
     atuin
@@ -125,7 +124,6 @@ unzip
     # ── Productivity ───────────────────────────────────────────────
     obsidian
     libreoffice
-    notion
     teams-for-linux
 
     # ── Media Production ─────────────────────────────────────────
@@ -143,7 +141,6 @@ unzip
     steam-run
     discord
     mangohud
-    lutris
     prismlauncher
     legendary-gl
     gamemode
