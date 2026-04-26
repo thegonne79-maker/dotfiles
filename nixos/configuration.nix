@@ -94,7 +94,7 @@
     wget
     curl
     git
-    gitAndTools.difft
+    difft
     htop
     btop
     eza
