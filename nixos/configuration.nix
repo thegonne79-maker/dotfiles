@@ -112,8 +112,7 @@ unzip
 
     # ── Dev Tools ───────────────────────────────────────────────────────────
     vscode
-    nodejs_21
-    nodejs_22
+    nodejs
     python3
     python311
     python312
