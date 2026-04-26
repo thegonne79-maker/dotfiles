@@ -101,8 +101,7 @@
     ripgrep
     fzf
     bat
-    unzip
-    tar
+unzip
     gzip
     bzip2
     xz
@@ -111,7 +110,7 @@
     mediainfo
     tmate
 
-    # ── Dev Tools ──────────────────────────────────────────────────���─────
+    # ── Dev Tools ───────────────────────────────────────────────────────────
     vscode
     nodejs_21
     nodejs_22
