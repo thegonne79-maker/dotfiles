@@ -141,8 +141,6 @@ unzip
     blender
     handbrake
     obs-studio
-    obs-studio-plugins.obs-filter-mask
-    obs-studio-plugins.obs-transitions
 
     # ── Gaming ────────────────────────────────────────────────
     steam
