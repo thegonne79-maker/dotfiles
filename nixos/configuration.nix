@@ -110,12 +110,10 @@ unzip
     mediainfo
     tmate
 
-    # ── Dev Tools ───────────────────────────────────────────────────────────
+# ── Dev Tools ───────────────────────────────────────────────────────────
     vscode
     nodejs
     python3
-    python311
-    python312
     go
     rustup
     cargo
@@ -137,8 +135,6 @@ unzip
     audacity
     inkscape
     gimp
-    krita
-    blender
     handbrake
     obs-studio
 
