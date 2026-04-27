@@ -1,0 +1,14 @@
+{
+  "url": "https://github.com//starcitizen-lug/patches",
+  "rev": "a979a57d6c20c4f21ead6950174040392d2cb005",
+  "date": "2026-04-24T20:39:29-05:00",
+  "path": "/nix/store/2i3bcra8f3zqk3smh7y2mjq27m7g2a17-patches",
+  "sha256": "10vlv30kzn7rpyyj75n9mac8gfscch2dw4p4y5qxjm2cvwpbj0fi",
+  "hash": "sha256-0QG5Lt9MVNlx8eQS3gRkTLuHmKrJliO9v/nYP8HYdIM=",
+  "fetchLFS": false,
+  "fetchSubmodules": false,
+  "deepClone": false,
+  "fetchTags": false,
+  "leaveDotGit": false,
+  "rootDir": ""
+}

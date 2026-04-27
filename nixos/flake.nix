@@ -13,15 +13,14 @@
     nix-mcp-servers.url = "github:cameronfyfe/nix-mcp-servers";
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
-    nix-citizen.url = "github:LovingMelody/nix-citizen";
-    nix-citizen.inputs.nix-gaming.follows = "nix-gaming";
-    nix-gaming.url = "github:fufexan/nix-gaming";
+    # nix-citizen/nix-gaming removed: overlay is broken against nixpkgs 25.11
+    # rsi-launcher and lug-helper are built from local pkgs/ with fixes applied
   };
 
   # HOME-MANAGER IS BLACKLISTED DO NOT USE IT :)
 
   outputs =
-    { self, determinate, nixinate, secrix, nixpkgs, nixpkgs_unstable, nix-mcp-servers, nixos-hardware, nix-citizen, nix-gaming }:
+    { self, determinate, nixinate, secrix, nixpkgs, nixpkgs_unstable, nix-mcp-servers, nixos-hardware }:
     let
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       lib = nixpkgs.lib;
@@ -36,9 +35,12 @@
         modules = [
           secrix.nixosModules.default
           determinate.nixosModules.default
+          ./nix-citizen-module.nix
           ./configuration.nix
           ./penis.nix
           {
+            # Local overlay: builds rsi-launcher + lug-helper against nixpkgs 25.11
+            nixpkgs.overlays = [ (import ./nix-citizen-overlay.nix) ];
             _module.args = {
               nixinate = {
                 host = "192.168.88.0"; # The computer IP

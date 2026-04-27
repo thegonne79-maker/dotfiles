@@ -19,6 +19,7 @@
     efi.canTouchEfiVariables = true;
     systemd-boot.enable = false; # Disable the default text loader
     refind.enable = true;
+    refind.maxGenerations = 3;
     grub.enable = false;
   };
   boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
@@ -76,14 +77,42 @@
   hardware.bluetooth.settings.General.Enable = "Source,Media,Sink,Socket";
 
   # ═══════════════════════════════════════════════════════════════════════════════
-  # AUDIO (PulseAudio)
+  # AUDIO (PipeWire)
   # ═══════════════════════════════════════════════════════════════════════════════
-  services.pipewire.enable = false;
-  services.pulseaudio.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    extraConfig.pipewire."91-jbl-default" = {
+      "context.properties" = {
+        "default.audio.sink" = "alsa_output.usb-Harman_International_Inc_JBL_Quantum810_Wireless-00.analog-stereo";
+        "default.audio.source" = "alsa_input.usb-Harman_International_Inc_JBL_Quantum810_Wireless-00.mono-fallback";
+      };
+    };
+  };
+  services.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # XDG PORTALS (required for screen sharing on Wayland)
+  # ═══════════════════════════════════════════════════════════════════════════════
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
+  };
 
   # ═══════════════════════════════════════════════════════════════════════════════════════
   # GAMING
   # ═══════════════════════════════════════════════════════════════════════════════
+  programs.rsi-launcher = {
+    enable = true;
+    location = "$HOME/Games/rsi-launcher";
+    umu.enable = true;
+    setLimits = true;
+    udevRules = true;
+  };
+
   programs.steam = {
     enable = true; # you probably already have this
     extraCompatPackages = with unstable; [ proton-ge-bin ];
@@ -106,6 +135,11 @@
 
     # ── Base Utilities ─────────────────────────────────────────────────────────────
     vim
+    figlet
+    lolcat
+    tarts
+    cmatrix
+    jq
     wget
     git
     htop
@@ -138,6 +172,7 @@
     steam-run
     discord
     mumble
+
 
     # ── Graphics & Video ──────────────────────────────────────
     chromium
