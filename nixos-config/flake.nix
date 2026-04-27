@@ -2,7 +2,7 @@
   description = "Tank's NixOS Configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     nix-citizen.url = "github:LovingMelody/nix-citizen";
     nix-citizen.inputs.nix-gaming.follows = "nix-gaming";
@@ -13,7 +13,7 @@
     nixosConfigurations.tank = inputs.nixpkgs.lib.nixosSystem {
       specialArgs = { inherit inputs; };
       modules = [
-        ./configuration.nix
+        ../nixos/configuration.nix
       ];
     };
 
@@ -24,7 +24,7 @@
       };
       extraSpecialArgs = { inherit inputs; };
       modules = [
-        ./home.nix
+        ../nixos/home.nix
       ];
     };
   };

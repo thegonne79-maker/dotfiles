@@ -5,31 +5,21 @@
   # ═══════════════════════════════════════════════════════════════════════════════════════
   # IMPORTS
   # ═══════════════════════════════════════════════════════════════════════════════
-imports = [ ./hardware-configuration.nix ];
-
-  users.users.tank = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "audio" "bluetooth" ];
-    hashedPassword = "$6$RbFEFElMVrmuZlAS$f.Vd3dw5m72GdBN1Uc8mYGWooqwTDH5dt.cN3riTCLxMvcyuAjONGXUEFfaep11fW6tMQMWdjh46hTyN3NH3M1";
-  };
+  imports = [ ./hardware-configuration.nix ];
 
   # ═══════════════════════════════════════════════════════════════════════════════
-  # BOOTLOADER (rEFInd for Dual Boot)
-  # ═══════════════════════════════════════════════════════════════════════════════
-  boot.loader = {
-    efi.canTouchEfiVariables = true;
-    systemd-boot.enable = false; # Disable the default text loader
-    refind.enable = true;
-     grub.enable = false;
-  };
-   boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
-   boot.kernelParams = [ "usbcore.autosuspend=-1" "nvidia-drm.modeset=1" ];
-
-  # ═══════════════════════════════════════════════════════════════════════════════════════
   # NIX SETTINGS
   # ═══════════════════════════════════════════════════════════════════════════════
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
+    substituters = [
+      "https://nix-citizen.cachix.org"
+      "https://nix-gaming.cachix.org"
+    ];
+    trusted-public-keys = [
+      "nix-citizen.cachix.org-1:lPMkWc2X8XD4/7YPEEwXKKBg+SVbYTVrAaLA2wQTKCo="
+      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+    ];
   };
   nixpkgs.config.allowUnfree = true;
 
@@ -53,9 +43,7 @@ imports = [ ./hardware-configuration.nix ];
   # ═══════════════════════════════════════════════════════════════════════════════
   services.xserver.enable = true;
   services.desktopManager.plasma6.enable = true;
-  services.displayManager.sddm.wayland.enable = false;
   services.openssh.enable = true;
-  services.haveged.enable = true; 
 
   # ═══════════════════════════════════════════════════════════════════════════════
   # GRAPHICS (NVIDIA)
@@ -67,7 +55,6 @@ imports = [ ./hardware-configuration.nix ];
     powerManagement.enable = true;
     open = false;
     nvidiaSettings = true;
-    forceFullCompositionPipeline = true; 
   };
 
   # ═══════════════════════════════════════════════════════════════════════════════
@@ -109,17 +96,34 @@ programs.steam.remotePlay.openFirewall = true;
     # ── Base Utilities ─────────────────────────────────────────────────────────────
     vim
     wget
+    curl
     git
     htop
+    btop
+    eza
+    fd
+    ripgrep
+    fzf
     bat
-    unzip
+unzip
     gzip
+    bzip2
+    xz
+    p7zip
+    cabextract
+    mediainfo
     tmate
-    swww
 
 # ── Dev Tools ───────────────────────────────────────────────────────────
+    vscode
+    nodejs
+    python3
+    go
+    rustup
+    cargo
     openssh
-    opencode
+    git-lfs
+    atuin
 
     # ── Productivity ───────────────────────────────────────────────
     obsidian
@@ -127,26 +131,40 @@ programs.steam.remotePlay.openFirewall = true;
     teams-for-linux
 
     # ── Media Production ─────────────────────────────────────────
+    ffmpeg
     vlc
     spotify
+    audacity
+    inkscape
     gimp
     handbrake
+    obs-studio
 
     # ── Gaming ────────────────────────────────────────────────
     steam
     steam-run
     discord
-    mumble
+    mangohud
+    prismlauncher
+    legendary-gl
+    gamemode
 
     # ── Graphics & Video ──────────────────────────────────────
     chromium
     firefox
+    mpv
 
     # ── Utilities ────────────────────────────────────────
-    
+    appimage-run
     unrar
     pkg-config
-    
+    gcc
+    gnumake
+    bison
+    flex
+    perl
+    ruby
+    lua
   ];
 
   # ═══════════════════════════════════════════════════════════════════════════════
@@ -168,8 +186,13 @@ programs.steam.remotePlay.openFirewall = true;
   fileSystems."/home/tank/Games" = {
     device = "/dev/disk/by-uuid/bf5ad455-c95d-410c-af93-e67082f722db";
     fsType = "ext4";
-    options = [ "nofail" ];
   };
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # BOOT
+  # ═══════════════════════════════════════════════════════════════════════════════
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   system.stateVersion = "25.11";
 }
