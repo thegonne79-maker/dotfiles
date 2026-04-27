@@ -1,11 +1,10 @@
-{ config, lib, pkgs, inputs, ... }:
-
+{ config, lib, pkgs, self, unstable, ... }:
 {
 
   # ═══════════════════════════════════════════════════════════════════════════════════════
   # IMPORTS
   # ═══════════════════════════════════════════════════════════════════════════════
-imports = [ ./hardware-configuration.nix ];
+  imports = [ ./hardware-configuration.nix ];
 
   users.users.tank = {
     isNormalUser = true;
@@ -20,10 +19,10 @@ imports = [ ./hardware-configuration.nix ];
     efi.canTouchEfiVariables = true;
     systemd-boot.enable = false; # Disable the default text loader
     refind.enable = true;
-     grub.enable = false;
+    grub.enable = false;
   };
-   boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
-   boot.kernelParams = [ "usbcore.autosuspend=-1" "nvidia-drm.modeset=1" ];
+  boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
+  boot.kernelParams = [ "usbcore.autosuspend=-1" "nvidia-drm.modeset=1" ];
 
   # ═══════════════════════════════════════════════════════════════════════════════════════
   # NIX SETTINGS
@@ -55,7 +54,7 @@ imports = [ ./hardware-configuration.nix ];
   services.desktopManager.plasma6.enable = true;
   services.displayManager.sddm.wayland.enable = false;
   services.openssh.enable = true;
-  services.haveged.enable = true; 
+  services.haveged.enable = true;
 
   # ═══════════════════════════════════════════════════════════════════════════════
   # GRAPHICS (NVIDIA)
@@ -67,7 +66,7 @@ imports = [ ./hardware-configuration.nix ];
     powerManagement.enable = true;
     open = false;
     nvidiaSettings = true;
-    forceFullCompositionPipeline = true; 
+    forceFullCompositionPipeline = true;
   };
 
   # ═══════════════════════════════════════════════════════════════════════════════
@@ -85,26 +84,25 @@ imports = [ ./hardware-configuration.nix ];
   # ═══════════════════════════════════════════════════════════════════════════════════════
   # GAMING
   # ═══════════════════════════════════════════════════════════════════════════════
-  programs.steam.enable = true;
-  programs.gamemode.enable = true;
+  programs.steam = {
+    enable = true; # you probably already have this
+    extraCompatPackages = with unstable; [ proton-ge-bin ];
+  };
 
+  # Nice-to-have for any game (highly recommended for SE)
+  programs.gamemode.enable = true; # Feral's gamemode
   # Force Steam to use system NVIDIA drivers  
   environment.sessionVariables = {
     NVIDIA_DRIVER_LIBRARIES = "1";
     NIX_GL_XARGS = "__GL_THREADED_OPTIMIZATION=1";
   };
 
-programs.steam.remotePlay.openFirewall = true;
+  programs.steam.remotePlay.openFirewall = true;
 
   # ═══════════════════════════════════════════════════════════════════════════
   # SYSTEM PACKAGES
   # ═══════════════════════════════════════════════════════════════════════════
   environment.systemPackages = with pkgs; [
-    (writeShellScriptBin "steam-nvidia" ''
-      #!/bin/sh
-      export LD_LIBRARY_PATH="/run/current-system/sw/lib:/run/current-system/lib:$LD_LIBRARY_PATH"
-      exec ${steam}/bin/steam "$@"
-    '')
 
     # ── Base Utilities ─────────────────────────────────────────────────────────────
     vim
@@ -116,15 +114,16 @@ programs.steam.remotePlay.openFirewall = true;
     gzip
     tmate
     swww
-
-# ── Dev Tools ───────────────────────────────────────────────────────────
+    btop
+    bottom
+    nvtopPackages.nvidia
+    # ── Dev Tools ───────────────────────────────────────────────────────────
     openssh
-    opencode
+    unstable.opencode
 
     # ── Productivity ───────────────────────────────────────────────
     obsidian
     libreoffice
-    teams-for-linux
 
     # ── Media Production ─────────────────────────────────────────
     vlc
@@ -133,6 +132,8 @@ programs.steam.remotePlay.openFirewall = true;
     handbrake
 
     # ── Gaming ────────────────────────────────────────────────
+    unstable.prismlauncher # FTBifi
+    unstable.vintagestory
     steam
     steam-run
     discord
@@ -141,12 +142,13 @@ programs.steam.remotePlay.openFirewall = true;
     # ── Graphics & Video ──────────────────────────────────────
     chromium
     firefox
-
+    unstable.vivaldi
     # ── Utilities ────────────────────────────────────────
-    
+    ripgrep
+    magic-wormhole
     unrar
     pkg-config
-    
+
   ];
 
   # ═══════════════════════════════════════════════════════════════════════════════
