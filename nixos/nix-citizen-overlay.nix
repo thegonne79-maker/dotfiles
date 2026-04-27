@@ -9,6 +9,7 @@ final: prev: {
     umu-launcher = prev.umu-launcher;
     proton-ge-bin = prev.proton-ge-bin;
     rsi-installer = final.callPackage ./pkgs/rsi-launcher/installer.nix {};
+    useUmu = true;
   };
 
   lug-helper = final.callPackage ./pkgs/lug-helper {
