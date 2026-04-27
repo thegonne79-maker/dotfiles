@@ -8,7 +8,7 @@
 
   users.users.tank = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "audio" "bluetooth" ];
+    extraGroups = [ "wheel" "audio" "bluetooth" "uinput" "input" "video" ];
     hashedPassword = "$6$RbFEFElMVrmuZlAS$f.Vd3dw5m72GdBN1Uc8mYGWooqwTDH5dt.cN3riTCLxMvcyuAjONGXUEFfaep11fW6tMQMWdjh46hTyN3NH3M1";
   };
 
@@ -174,6 +174,7 @@
     steam-run
     discord
     mumble
+    pkgs.moonlight-qt
 
 
     # ── Graphics & Video ──────────────────────────────────────
@@ -208,6 +209,36 @@
     device = "/dev/disk/by-uuid/bf5ad455-c95d-410c-af93-e67082f722db";
     fsType = "ext4";
     options = [ "nofail" ];
+  };
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # SUNSHINE (Game Streaming Server)
+  # ═══════════════════════════════════════════════════════════════════════════════
+  services.sunshine = {
+    enable = true;
+    autoStart = true;
+    capSysAdmin = true;
+    openFirewall = true;
+    package = pkgs.sunshine.override {
+      cudaSupport = true;
+      cudaPackages = pkgs.cudaPackages;
+    };
+    settings = {
+      sunshine_name = "tank";
+      encoder = "nvenc";
+      capture = "kms";
+    };
+    applications.apps = [
+      { name = "Desktop"; image-path = "desktop.png"; }
+    ];
+  };
+
+  hardware.uinput.enable = true;
+
+  networking.firewall = {
+    enable = true;
+    trustedInterfaces = [ "tailscale0" ];
+    allowedUDPPorts = [ config.services.tailscale.port ];
   };
 
   system.stateVersion = "25.11";
