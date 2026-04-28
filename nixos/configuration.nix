@@ -56,6 +56,7 @@
   services.xserver.enable = true;
   services.desktopManager.plasma6.enable = true;
   services.displayManager.sddm.wayland.enable = false;
+  services.displayManager.defaultSession = "plasmax11";
   services.openssh.enable = true;
   services.haveged.enable = true;
 
@@ -81,6 +82,10 @@
   # ═══════════════════════════════════════════════════════════════════════════════
   # AUDIO (PipeWire)
   # ═══════════════════════════════════════════════════════════════════════════════
+  # JBL Quantum 810: use the 2.4GHz USB dongle (Harman device) as default.
+  # The dongle exposes analog-stereo + mono-fallback which work cleanly.
+  # The wired USB HiFi interface uses UCM which marks all routes availability:no
+  # (except SPDIF) causing WirePlumber to skip the mic — avoid that path.
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -172,7 +177,12 @@
     unstable.vintagestory
     steam
     steam-run
-    discord
+    (discord.overrideAttrs (old: {
+      postFixup = (old.postFixup or "") + ''
+        substituteInPlace $out/opt/Discord/Discord \
+          --replace-fail '"$@"' '"$@" --enable-features=WebRTCPipeWireCapturer'
+      '';
+    }))
     mumble
     pkgs.moonlight-qt
 
