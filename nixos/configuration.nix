@@ -210,6 +210,11 @@
   boot.kernel.sysctl = {
     "vm.max_map_count" = 16777216;
     "fs.file-max" = 524288;
+    "net.core.rmem_max" = 134217728;
+    "net.core.wmem_max" = 134217728;
+    "net.ipv4.tcp_rmem" = "4096 87380 134217728";
+    "net.ipv4.tcp_wmem" = "4096 65536 134217728";
+    "net.ipv4.tcp_congestion_control" = "bbr";
   };
 
   # ═══════════════════════════════════════════════════════════════════════════════
@@ -249,6 +254,16 @@
     enable = true;
     trustedInterfaces = [ "tailscale0" ];
     allowedUDPPorts = [ config.services.tailscale.port ];
+  };
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # ZRAM SWAP
+  # ═══════════════════════════════════════════════════════════════════════════════
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 100;
+    priority = 100;
   };
 
   system.stateVersion = "25.11";
