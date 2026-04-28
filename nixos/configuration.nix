@@ -24,6 +24,7 @@
   };
   boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
   boot.kernelParams = [ "usbcore.autosuspend=-1" "nvidia-drm.modeset=1" ];
+  hardware.nvidia.nvidiaPersistenced = true;
 
   # ═══════════════════════════════════════════════════════════════════════════════════════
   # NIX SETTINGS
@@ -241,7 +242,7 @@
     settings = {
       sunshine_name = "tank";
       encoder = "nvenc";
-      capture = "kms";
+      capture = "nvfbc";
     };
     applications.apps = [
       { name = "Desktop"; image-path = "desktop.png"; }
