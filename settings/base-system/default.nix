@@ -1,7 +1,10 @@
 { pkgs, lib, config, self, unstable, ... }:
 {
 
-  imports = [ ./communications.nix ];
+  imports = [ 
+  ./communications.nix
+  ./sshd.nix
+  ];
 
   programs.ssh.enableAskPassword = false;
   programs.gnupg.agent = {
@@ -12,20 +15,15 @@
   # ═══════════════════════════════════════════════════════════════════════════════════════
   # NIX SETTINGS
   # ═══════════════════════════════════════════════════════════════════════════════
+  nix.settings.auto-optimise-store = true;
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
   };
-  nixpkgs.config.allowUnfree = true;
-  networking.extraHosts = ''
-    127.0.0.1 modules-cdn.eac-prod.on.epicgames.com
-  '';
-  services.tailscale.enable = true;
-  # ═══════════════════════════════════════════════════════════════════════════════════════
-  # LOCALIZATION
-  # ═══════════════════════════════════════════════════════════════════════════════
-  i18n.defaultLocale = "en_US.UTF-8";
-  time.timeZone = "America/Denver";
-
   # ═══════════════════════════════════════════════════════════════════════════════
   # DESKTOP
   # ═══════════════════════════════════════════════════════════════════════════════
@@ -66,6 +64,18 @@
   # ═══════════════════════════════════════════════════════════════════════════
   environment.systemPackages = with pkgs; [
 
+    vim git htop btop wget curl unzip
+    bat ripgrep jq magic-wormhole
+    unstable.opencode
+    firefox unstable.vivaldi chromium
+    obsidian libreoffice
+    vlc spotify gimp
+    discord mumble
+    unstable.prismlauncher
+    steam steam-run
+    nvtopPackages.nvidia
+    kdePackages.xdg-desktop-portal-kde
+    pkgs.moonlight-qt
     # ── Base Utilities ─────────────────────────────────────────────────────────────
     vim
     figlet
@@ -106,7 +116,6 @@
 
     unstable.prismlauncher # FTBifi
     unstable.vintagestory
-    steam
     steam-run
     (discord.overrideAttrs (old: {
       postFixup = (old.postFixup or "") + ''
@@ -157,6 +166,11 @@
   };
   hardware.uinput.enable = true;
 
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde
+    pkgs.moonlight-qt ];
+  };
   networking.firewall = {
     enable = true;
     trustedInterfaces = [ "tailscale0" ];

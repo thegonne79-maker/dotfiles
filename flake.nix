@@ -62,6 +62,7 @@
 	      };
             };
             nix.registry.nixpkgs.flake = nixpkgs;
+	      nixpkgs.config.allowUnfree = true;
           }
         ];
       };
@@ -96,6 +97,7 @@
               inherit self;
               unstable = import nixpkgs_unstable { system = "x86_64-linux"; config.allowUnfree = true; };
             };
+	      nixpkgs.config.allowUnfree = true;
             nix.registry.nixpkgs.flake = nixpkgs;
           }
         ];

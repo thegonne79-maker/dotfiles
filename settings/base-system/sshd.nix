@@ -1,0 +1,41 @@
+{ config, pkgs, lib, ... }:
+
+{
+
+#  systemd.sockets.sshd = {
+#    # make sure it never gives up; burn the freaking CPU down with failures; at this point it's life or death.
+#    upheldBy = [ "sockets.target" ];
+#    after = [ "wiregaurd-wireg0.target" ];
+#    startLimitIntervalSec = 5;
+#    startLimitBurst = 1;
+#  };
+
+  # Enable the OpenSSH daemon.
+  services = {
+    openssh = {
+      enable = true;
+ #     startWhenNeeded = lib.mkDefault true;
+      ports = [ 1108 22 ];
+      settings = {
+        PermitRootLogin = lib.mkForce "no";
+        PasswordAuthentication = false;
+        LoginGraceTime = 30;
+        MaxAuthTries = 3;
+        MaxSessions = 2;
+        X11Forwarding = false;
+        AllowTcpForwarding = false;
+        ClientAliveInterval = 300;
+        ClientAliveCountMax = 0;
+        KbdInteractiveAuthentication = false;
+        AllowUsers = [ "John88" "tank" ];
+      };
+      hostKeys = [{
+        path = "/etc/ssh/ssh_host_ed25519_key";
+        type = "ed25519";
+      }];
+    };
+  };
+  # Open ports in the firewall.
+  networking.firewall.allowedTCPPorts = [ 22 1108 ];
+  networking.firewall.allowedUDPPorts = [ ];
+}
