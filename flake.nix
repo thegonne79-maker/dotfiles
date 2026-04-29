@@ -29,6 +29,43 @@
       formatter."${system}" = pkgs.nixpkgs-fmt;
       apps."${system}" = { secrix = secrix.secrix self; } // (nixinate.lib.genDeploy.x86_64-linux self);
 
+      nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit self; };
+        modules = [
+          secrix.nixosModules.default
+          determinate.nixosModules.default
+          ./machines/laptop
+          ./settings/base-system
+          ./users/darthpjb.nix
+          ./users/tank.nix
+          {
+	    secrix = 
+	    { 
+	      defaultEncryptKeys = {
+	         John88 = [(builtins.readFile ./public-keys/JOHN_BARGMAN_ED_25519.pub)];
+	         tank = [(builtins.readFile ./public-keys/tankles-user-desktop.pub)];
+	         };
+	# hostPubKey = (builtins.readFile ./public-keys/tankles-laptop.pub);  
+	     };
+            _module.args = {
+              nixinate = {
+                host = "100.75.110.25"; # The computer IP
+                sshUser = "tankles";
+                buildOn = "locals"; # valid args are "local" or "remote"
+                substituteOnTarget = true; # if buildOn is "local" then it will substitute on the target, "-s"
+                hermetic = false;
+              };
+              inherit self;
+              unstable = import nixpkgs_unstable { 
+	        system = "x86_64-linux"; 
+	        config.allowUnfree = true; 
+	      };
+            };
+            nix.registry.nixpkgs.flake = nixpkgs;
+          }
+        ];
+      };
+
       nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit self; };
         modules = [
@@ -39,6 +76,14 @@
           ./users/darthpjb.nix
           ./users/tank.nix
           {
+	    secrix = 
+	    { 
+	      defaultEncryptKeys = {
+	         John88 = [(builtins.readFile ./public-keys/JOHN_BARGMAN_ED_25519.pub)];
+	         tank = [(builtins.readFile ./public-keys/tankles-user-desktop.pub)];
+	         };
+		 hostPubKey = (builtins.readFile ./public-keys/tankles-desktop.pub);  
+		 };
             environment.systemPackages = [ star-citizen.packages.x86_64-linux.rsi-launcher ];
             _module.args = {
               nixinate = {
@@ -55,6 +100,5 @@
           }
         ];
       };
-
-    };
+};
 }
