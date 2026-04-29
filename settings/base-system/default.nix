@@ -1,10 +1,11 @@
 { pkgs, lib, config, self, unstable, ... }:
 {
 
-  imports = [ 
-  ./communications.nix
-  ./sshd.nix
-  ];
+  imports = [
+    ./communications.nix
+    ./sshd.nix
+     ./tailscale.nix
+];
 
   programs.ssh.enableAskPassword = false;
   programs.gnupg.agent = {
@@ -64,15 +65,31 @@
   # ═══════════════════════════════════════════════════════════════════════════
   environment.systemPackages = with pkgs; [
 
-    vim git htop btop wget curl unzip
-    bat ripgrep jq magic-wormhole
+    vim
+    git
+    htop
+    btop
+    wget
+    curl
+    unzip
+    bat
+    ripgrep
+    jq
+    magic-wormhole
     unstable.opencode
-    firefox unstable.vivaldi chromium
-    obsidian libreoffice
-    vlc spotify gimp
-    discord mumble
+    firefox
+    unstable.vivaldi
+    chromium
+    obsidian
+    libreoffice
+    vlc
+    spotify
+    gimp
+    discord
+    mumble
     unstable.prismlauncher
-    steam steam-run
+    steam
+    steam-run
     nvtopPackages.nvidia
     kdePackages.xdg-desktop-portal-kde
     pkgs.moonlight-qt
@@ -168,8 +185,10 @@
 
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde
-    pkgs.moonlight-qt ];
+    extraPortals = [
+      pkgs.kdePackages.xdg-desktop-portal-kde
+      pkgs.moonlight-qt
+    ];
   };
   networking.firewall = {
     enable = true;

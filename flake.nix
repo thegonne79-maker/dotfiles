@@ -39,14 +39,14 @@
           ./users/darthpjb.nix
           ./users/tank.nix
           {
-	    secrix = 
-	    { 
-	      defaultEncryptKeys = {
-	         John88 = [(builtins.readFile ./public-keys/JOHN_BARGMAN_ED_25519.pub)];
-	         tank = [(builtins.readFile ./public-keys/tankles-user-desktop.pub)];
-	         };
-	# hostPubKey = (builtins.readFile ./public-keys/tankles-laptop.pub);  
-	     };
+            secrix =
+              {
+                defaultEncryptKeys = {
+                  John88 = [ (builtins.readFile ./public-keys/JOHN_BARGMAN_ED_25519.pub) ];
+                  tank = [ (builtins.readFile ./public-keys/tankles-user-desktop.pub) ];
+                };
+                hostPubKey = (builtins.readFile ./public-keys/tankles-laptop.pub);
+              };
             _module.args = {
               nixinate = {
                 host = "100.75.110.25"; # The computer IP
@@ -56,13 +56,13 @@
                 hermetic = false;
               };
               inherit self;
-              unstable = import nixpkgs_unstable { 
-	        system = "x86_64-linux"; 
-	        config.allowUnfree = true; 
-	      };
+              unstable = import nixpkgs_unstable {
+                system = "x86_64-linux";
+                config.allowUnfree = true;
+              };
             };
             nix.registry.nixpkgs.flake = nixpkgs;
-	      nixpkgs.config.allowUnfree = true;
+            nixpkgs.config.allowUnfree = true;
           }
         ];
       };
@@ -77,14 +77,14 @@
           ./users/darthpjb.nix
           ./users/tank.nix
           {
-	    secrix = 
-	    { 
-	      defaultEncryptKeys = {
-	         John88 = [(builtins.readFile ./public-keys/JOHN_BARGMAN_ED_25519.pub)];
-	         tank = [(builtins.readFile ./public-keys/tankles-user-desktop.pub)];
-	         };
-		 hostPubKey = (builtins.readFile ./public-keys/tankles-desktop.pub);  
-		 };
+            secrix =
+              {
+                defaultEncryptKeys = {
+                  John88 = [ (builtins.readFile ./public-keys/JOHN_BARGMAN_ED_25519.pub) ];
+                  tank = [ (builtins.readFile ./public-keys/tankles-user-desktop.pub) ];
+                };
+                hostPubKey = (builtins.readFile ./public-keys/tankles-desktop.pub);
+              };
             environment.systemPackages = [ star-citizen.packages.x86_64-linux.rsi-launcher ];
             _module.args = {
               nixinate = {
@@ -97,10 +97,10 @@
               inherit self;
               unstable = import nixpkgs_unstable { system = "x86_64-linux"; config.allowUnfree = true; };
             };
-	      nixpkgs.config.allowUnfree = true;
+            nixpkgs.config.allowUnfree = true;
             nix.registry.nixpkgs.flake = nixpkgs;
           }
         ];
       };
-};
+    };
 }

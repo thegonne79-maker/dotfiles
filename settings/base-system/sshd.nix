@@ -2,19 +2,19 @@
 
 {
 
-#  systemd.sockets.sshd = {
-#    # make sure it never gives up; burn the freaking CPU down with failures; at this point it's life or death.
-#    upheldBy = [ "sockets.target" ];
-#    after = [ "wiregaurd-wireg0.target" ];
-#    startLimitIntervalSec = 5;
-#    startLimitBurst = 1;
-#  };
+  #  systemd.sockets.sshd = {
+  #    # make sure it never gives up; burn the freaking CPU down with failures; at this point it's life or death.
+  #    upheldBy = [ "sockets.target" ];
+  #    after = [ "wiregaurd-wireg0.target" ];
+  #    startLimitIntervalSec = 5;
+  #    startLimitBurst = 1;
+  #  };
 
   # Enable the OpenSSH daemon.
   services = {
     openssh = {
       enable = true;
- #     startWhenNeeded = lib.mkDefault true;
+      #     startWhenNeeded = lib.mkDefault true;
       ports = [ 1108 22 ];
       settings = {
         PermitRootLogin = lib.mkForce "no";

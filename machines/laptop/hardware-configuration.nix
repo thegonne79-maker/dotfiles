@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/hardware/cpu/intel-npu.nix")
+    [
+      (modulesPath + "/hardware/cpu/intel-npu.nix")
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
@@ -14,19 +15,20 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/3fb1da8a-f1fe-41fa-893f-6a8e84464d9a";
+    {
+      device = "/dev/disk/by-uuid/3fb1da8a-f1fe-41fa-893f-6a8e84464d9a";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/12CE-A600";
+    {
+      device = "/dev/disk/by-uuid/12CE-A600";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/536d97be-b402-443a-9aeb-bf68f51a531f"; }
-    ];
+    [{ device = "/dev/disk/by-uuid/536d97be-b402-443a-9aeb-bf68f51a531f"; }];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.npu.enable = true;
