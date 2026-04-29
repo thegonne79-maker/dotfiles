@@ -3,6 +3,12 @@
 
   imports = [ ./communications.nix ];
 
+  programs.ssh.enableAskPassword = false;
+  programs.gnupg.agent = {
+    pinentryPackage = pkgs.pinentry-tty;
+    enable = true;
+    enableSSHSupport = true;
+  };
   # ═══════════════════════════════════════════════════════════════════════════════════════
   # NIX SETTINGS
   # ═══════════════════════════════════════════════════════════════════════════════
@@ -78,7 +84,7 @@
     btop
     bottom
     nvtopPackages.nvidia
-
+    lite-xl
     # ── Dev Tools ───────────────────────────────────────────────────────────
 
     openssh

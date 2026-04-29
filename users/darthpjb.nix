@@ -1,12 +1,6 @@
 { config, unstable, self, pkgs, lib, ... }:
 {
 
-  programs.ssh.enableAskPassword = false;
-  programs.gnupg.agent = {
-    pinentryPackage = pkgs.pinentry-tty;
-    enable = true;
-    enableSSHSupport = true;
-  };
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.John88 = {
     isNormalUser = true;
