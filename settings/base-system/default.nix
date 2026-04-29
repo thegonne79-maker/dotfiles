@@ -23,6 +23,7 @@
     options = "--delete-older-than 7d";
   };
   nix.settings = {
+    trusted-users = [ "root" "tank" "John88" ];
     experimental-features = [ "nix-command" "flakes" ];
   };
   # ═══════════════════════════════════════════════════════════════════════════════

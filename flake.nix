@@ -43,13 +43,14 @@
               {
                 defaultEncryptKeys = {
                   John88 = [ (builtins.readFile ./public-keys/JOHN_BARGMAN_ED_25519.pub) ];
-                  tank = [ (builtins.readFile ./public-keys/tankles-user-desktop.pub) ];
+                  tank-d = [ (builtins.readFile ./public-keys/tankles-user-desktop.pub) ];
+                  tank-l = [ (builtins.readFile ./public-keys/tankles-user-laptop.pub) ];
                 };
                 hostPubKey = (builtins.readFile ./public-keys/tankles-laptop.pub);
               };
             _module.args = {
               nixinate = {
-                host = "100.75.110.25"; # The computer IP
+                host = "100.74.110.25"; # The computer IP
                 sshUser = "tank";
                 buildOn = "local"; # valid args are "local" or "remote"
                 substituteOnTarget = true; # if buildOn is "local" then it will substitute on the target, "-s"
@@ -81,7 +82,8 @@
               {
                 defaultEncryptKeys = {
                   John88 = [ (builtins.readFile ./public-keys/JOHN_BARGMAN_ED_25519.pub) ];
-                  tank = [ (builtins.readFile ./public-keys/tankles-user-desktop.pub) ];
+                  tank-d = [ (builtins.readFile ./public-keys/tankles-user-desktop.pub) ];
+                  tank-l = [ (builtins.readFile ./public-keys/tankles-user-laptop.pub) ];
                 };
                 hostPubKey = (builtins.readFile ./public-keys/tankles-desktop.pub);
               };
