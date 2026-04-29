@@ -50,8 +50,8 @@
             _module.args = {
               nixinate = {
                 host = "100.75.110.25"; # The computer IP
-                sshUser = "tankles";
-                buildOn = "locals"; # valid args are "local" or "remote"
+                sshUser = "tank";
+                buildOn = "local"; # valid args are "local" or "remote"
                 substituteOnTarget = true; # if buildOn is "local" then it will substitute on the target, "-s"
                 hermetic = false;
               };
