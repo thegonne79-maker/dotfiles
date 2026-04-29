@@ -59,13 +59,13 @@
   services.displayManager.sddm.wayland.enable = false;
   services.displayManager.defaultSession = "plasmax11";
   services.openssh.enable = true;
-  services.haveged.enable = true;
 
   # ═══════════════════════════════════════════════════════════════════════════════
   # GRAPHICS (NVIDIA)
   # ═══════════════════════════════���═══════════════════════════════════════════════
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = true;
@@ -102,24 +102,8 @@
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
 
-  # ═══════════════════════════════════════════════════════════════════════════════
-  # XDG PORTALS (required for screen sharing on Wayland)
-  # ═══════════════════════════════════════════════════════════════════════════════
-  xdg.portal = {
-    enable = true;
-    extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
-  };
-
-  # ═══════════════════════════════════════════════════════════════════════════════════════
   # GAMING
   # ═══════════════════════════════════════════════════════════════════════════════
-  programs.rsi-launcher = {
-    enable = true;
-    location = "$HOME/Games/rsi-launcher";
-    umu.enable = true;
-    setLimits = true;
-    udevRules = true;
-  };
 
   programs.steam = {
     enable = true; # you probably already have this
@@ -162,7 +146,7 @@
     # ── Dev Tools ───────────────────────────────────────────────────────────
     openssh
     unstable.opencode
-
+    neovim
     # ── Productivity ───────────────────────────────────────────────
     obsidian
     libreoffice
@@ -181,11 +165,21 @@
     (discord.overrideAttrs (old: {
       postFixup = (old.postFixup or "") + ''
         substituteInPlace $out/opt/Discord/Discord \
-          --replace-fail '"$@"' '"$@" --enable-features=WebRTCPipeWireCapturer'
+          --replace-fail '"$@"' '"$@" --enable-features=WebRTCPipeWireCapturer --disable-gpu'
       '';
     }))
     mumble
     pkgs.moonlight-qt
+    # Vulkan and DirectX support for Star Citizen
+    vulkan-tools
+    vulkan-loader
+    vulkan-validation-layers
+    mesa
+    libva
+    libva-utils
+    # 32-bit Vulkan for DXVK
+    pkgsi686Linux.vulkan-loader
+    pkgsi686Linux.mesa
 
 
     # ── Graphics & Video ──────────────────────────────────────
@@ -223,6 +217,12 @@
   # ═══════════════════════════════════════════════════════════════════════════════
   fileSystems."/home/tank/Games" = {
     device = "/dev/disk/by-uuid/bf5ad455-c95d-410c-af93-e67082f722db";
+    fsType = "ext4";
+    options = [ "nofail" ];
+  };
+
+  fileSystems."/mnt/samsung-1tb" = {
+    device = "/dev/disk/by-uuid/9dcd0554-7354-4754-9707-c9da3a3c0fae";
     fsType = "ext4";
     options = [ "nofail" ];
   };

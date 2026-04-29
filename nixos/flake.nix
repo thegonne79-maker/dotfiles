@@ -6,21 +6,20 @@
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
     nixinate = { url = "github:DarthPJB/nixinate"; inputs.nixpkgs.follows = "nixpkgs"; };
     secrix.url = "github:Platonic-Systems/secrix";
-    #   secure_pkgs.url = "https://flakehub.com/f/DeterminateSystems/secure/0";
     nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0";
     nixpkgs_unstable.url = "https://flakehub.com/f/DeterminateSystems/nixpkgs-weekly/0";
-    #  parsecgaming.url = "github:DarthPJB/parsec-gaming-nix";
     nix-mcp-servers.url = "github:cameronfyfe/nix-mcp-servers";
     nixos-hardware.url = "github:nixos/nixos-hardware";
+    star-citizen.url = "github:LovingMelody/nix-citizen";
 
-    # nix-citizen/nix-gaming removed: overlay is broken against nixpkgs 25.11
-    # rsi-launcher and lug-helper are built from local pkgs/ with fixes applied
   };
 
   # HOME-MANAGER IS BLACKLISTED DO NOT USE IT :)
-
+  # DO NOT USE OVERLAYS
+  # DO NOT FOLOW GITHUB INSTRUCTIONS
+  # FOLLOW GNU STALLMAN LIGHT, NO NOT THE HERACY OF FAKE UNPROVEN TOOLS
   outputs =
-    { self, determinate, nixinate, secrix, nixpkgs, nixpkgs_unstable, nix-mcp-servers, nixos-hardware }:
+    { self, determinate, nixinate, secrix, star-citizen, nixpkgs, nixpkgs_unstable, nix-mcp-servers, nixos-hardware }:
     let
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       lib = nixpkgs.lib;
@@ -35,12 +34,10 @@
         modules = [
           secrix.nixosModules.default
           determinate.nixosModules.default
-          ./nix-citizen-module.nix
           ./configuration.nix
           ./penis.nix
           {
-            # Local overlay: builds rsi-launcher + lug-helper against nixpkgs 25.11
-            nixpkgs.overlays = [ (import ./nix-citizen-overlay.nix) ];
+	    environment.systemPackages = [  star-citizen.packages.x86_64-linux.rsi-launcher ];
             _module.args = {
               nixinate = {
                 host = "192.168.88.0"; # The computer IP
@@ -57,15 +54,5 @@
         ];
       };
 
-      #    homeConfigurations.tank = inputs.home-manager.lib.homeManagerConfiguration {
-      #      pkgs = import inputs.nixpkgs {
-      #        system = "x86_64-linux";
-      #        config.allowUnfree = true;
-      #      };
-      #      extraSpecialArgs = { inherit inputs; };
-      #      modules = [
-      #        ./home.nix
-      #      ];
-      #    };
     };
 }
