@@ -34,15 +34,17 @@
         modules = [
           secrix.nixosModules.default
           determinate.nixosModules.default
-          ./configuration.nix
-          ./penis.nix
+          ./machines/desktop
+          ./settings/base-system
+          ./users/darthpjb.nix
+          ./users/tank.nix
           {
-	    environment.systemPackages = [  star-citizen.packages.x86_64-linux.rsi-launcher ];
+            environment.systemPackages = [ star-citizen.packages.x86_64-linux.rsi-launcher ];
             _module.args = {
               nixinate = {
-                host = "192.168.88.0"; # The computer IP
-                sshUser = "tankles-or-something";
-                buildOn = "local"; # valid args are "local" or "remote"
+                host = "100.113.169.51"; # The computer IP
+                sshUser = "tank";
+                buildOn = "remote"; # valid args are "local" or "remote"
                 substituteOnTarget = true; # if buildOn is "local" then it will substitute on the target, "-s"
                 hermetic = false;
               };
