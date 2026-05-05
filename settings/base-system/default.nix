@@ -37,7 +37,7 @@
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;
 
-
+boot.supportedFilesystems = [ "ntfs" ];
 
   services.pipewire = {
     enable = true;

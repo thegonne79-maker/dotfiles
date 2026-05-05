@@ -67,7 +67,11 @@
     NIX_GL_XARGS = "__GL_THREADED_OPTIMIZATION=1";
   };
 
-
+  fileSystems."/home/tank/real_drive_c" =
+  {
+     device= "/dev/nvme0n1p3";
+     fsType = "ntfs3";
+  };
 
 
   # ═══════════════════════════════════════════════════════════════════════════════
