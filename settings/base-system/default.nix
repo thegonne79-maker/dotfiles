@@ -16,10 +16,6 @@
   # ═══════════════════════════════════════════════════════════════════════════════════════
   # NIX SETTINGS
   # ═══════════════════════════════════════════════════════════════════════════════
-  nix.settings = { 
-  trusted-users = [ "John88" "tank" ] ;
-  auto-optimise-store = true;
-  };
   nix.gc = {
     automatic = true;
     dates = "weekly";
@@ -27,6 +23,7 @@
   };
   nix.settings = {
     trusted-users = [ "root" "tank" "John88" ];
+  auto-optimise-store = true;
     experimental-features = [ "nix-command" "flakes" ];
   };
   # ═══════════════════════════════════════════════════════════════════════════════
