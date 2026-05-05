@@ -16,7 +16,10 @@
   # ═══════════════════════════════════════════════════════════════════════════════════════
   # NIX SETTINGS
   # ═══════════════════════════════════════════════════════════════════════════════
-  nix.settings.auto-optimise-store = true;
+  nix.settings = { 
+  trusted-users = [ "John88" "tank" ] ;
+  auto-optimise-store = true;
+  };
   nix.gc = {
     automatic = true;
     dates = "weekly";
